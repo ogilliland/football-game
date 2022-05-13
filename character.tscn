@@ -1,0 +1,76 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://limb_joint.tscn" type="PackedScene" id=1]
+[ext_resource path="res://leg_ik.gd" type="Script" id=2]
+[ext_resource path="res://target_motion.gd" type="Script" id=3]
+
+[sub_resource type="CubeMesh" id=3]
+size = Vector3( 0.25, 0.5, 0.125 )
+
+[sub_resource type="SphereMesh" id=4]
+radius = 0.125
+height = 0.25
+
+[sub_resource type="SphereMesh" id=1]
+radius = 0.05
+height = 0.1
+
+[sub_resource type="SpatialMaterial" id=2]
+albedo_color = Color( 1, 0, 0, 1 )
+
+[node name="Character" type="Spatial"]
+
+[node name="Body" type="Spatial" parent="."]
+
+[node name="BodyMesh" type="MeshInstance" parent="Body"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, 0 )
+mesh = SubResource( 3 )
+material/0 = null
+
+[node name="HeadMesh" type="MeshInstance" parent="Body"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.125, 0 )
+mesh = SubResource( 4 )
+material/0 = null
+
+[node name="LeftFootTarget" type="Position3D" parent="Body"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.1, 0, 0 )
+script = ExtResource( 3 )
+
+[node name="DebugSphere" type="MeshInstance" parent="Body/LeftFootTarget"]
+mesh = SubResource( 1 )
+material/0 = SubResource( 2 )
+
+[node name="RightFootTarget" type="Position3D" parent="Body"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.1, 0, 0 )
+script = ExtResource( 3 )
+
+[node name="DebugSphere" type="MeshInstance" parent="Body/RightFootTarget"]
+mesh = SubResource( 1 )
+skeleton = NodePath("../../LeftFootTarget")
+material/0 = SubResource( 2 )
+
+[node name="LeftLeg" parent="." instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.1, 0.5, 0 )
+script = ExtResource( 2 )
+child = NodePath("LeftShin")
+target = NodePath("../Body/LeftFootTarget")
+
+[node name="LeftShin" parent="LeftLeg" instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, 0 )
+child = NodePath("LeftFoot")
+
+[node name="LeftFoot" type="Position3D" parent="LeftLeg/LeftShin"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, 0 )
+
+[node name="RightLeg" parent="." instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.1, 0.5, 0 )
+script = ExtResource( 2 )
+child = NodePath("RightShin")
+target = NodePath("../Body/RightFootTarget")
+
+[node name="RightShin" parent="RightLeg" instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, 0 )
+child = NodePath("RightFoot")
+
+[node name="RightFoot" type="Position3D" parent="RightLeg/RightShin"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, 0 )
