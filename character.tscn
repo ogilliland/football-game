@@ -1,7 +1,7 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=5 format=2]
 
+[ext_resource path="res://ik_target.tscn" type="PackedScene" id=1]
 [ext_resource path="res://leg_ik.tscn" type="PackedScene" id=2]
-[ext_resource path="res://target_motion.gd" type="Script" id=3]
 
 [sub_resource type="CubeMesh" id=3]
 size = Vector3( 0.25, 0.5, 0.125 )
@@ -9,13 +9,6 @@ size = Vector3( 0.25, 0.5, 0.125 )
 [sub_resource type="SphereMesh" id=4]
 radius = 0.125
 height = 0.25
-
-[sub_resource type="SphereMesh" id=1]
-radius = 0.05
-height = 0.1
-
-[sub_resource type="SpatialMaterial" id=2]
-albedo_color = Color( 1, 0, 0, 1 )
 
 [node name="Character" type="Spatial"]
 
@@ -31,22 +24,11 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.125, 0 )
 mesh = SubResource( 4 )
 material/0 = null
 
-[node name="LeftFootTarget" type="Position3D" parent="Body"]
+[node name="LeftFootTarget" parent="Body" instance=ExtResource( 1 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.1, 0, 0 )
-script = ExtResource( 3 )
 
-[node name="DebugSphere" type="MeshInstance" parent="Body/LeftFootTarget"]
-mesh = SubResource( 1 )
-material/0 = SubResource( 2 )
-
-[node name="RightFootTarget" type="Position3D" parent="Body"]
+[node name="RightFootTarget" parent="Body" instance=ExtResource( 1 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.1, 0, 0 )
-script = ExtResource( 3 )
-
-[node name="DebugSphere" type="MeshInstance" parent="Body/RightFootTarget"]
-mesh = SubResource( 1 )
-skeleton = NodePath("../../LeftFootTarget")
-material/0 = SubResource( 2 )
 
 [node name="LeftLeg" parent="." instance=ExtResource( 2 )]
 target = NodePath("../Body/LeftFootTarget")
