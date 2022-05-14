@@ -6,8 +6,11 @@ const FRICTION: float = 8.0
 
 onready var animation_tree = $AnimationTree
 onready var ball_target = $BallTarget
+onready var ball_capture_area = $BallCaptureArea
 
 var velocity: Vector3
+var has_ball: float = false
+var ball: Spatial
 
 func _physics_process(delta: float) -> void:
 	var direction := Vector3(
@@ -49,3 +52,22 @@ func _physics_process(delta: float) -> void:
 		# Interpolate using spherical-linear interpolation (SLERP)
 		var c = a.slerp(b, 0.25)
 		transform.basis = Basis(c)
+
+func _input(event: InputEvent) -> void:
+	if event.is_action_pressed("action_pass") and has_ball:
+		ball_capture_area.monitoring = false
+		ball_capture_area.get_node("ResetTimer").start()
+		ball.clear_target()
+		var impulse = 10 * global_transform.basis.z
+		impulse += 5 * Vector3.UP
+		ball.apply_central_impulse(impulse)
+		has_ball = false
+
+func _on_ball_capture_area_body_entered(body: PhysicsBody) -> void:
+	if body.name == "Ball":
+		body.set_target(ball_target)
+		ball = body
+		has_ball = true
+
+func _on_ball_capture_area_timeout():
+	ball_capture_area.monitoring = true
