@@ -2,15 +2,41 @@ tool
 extends Spatial
 
 export var target: NodePath
+export var upper_color: Color = Color(1, 1, 1) setget set_upper_color
+export var lower_color: Color = Color(1, 1, 1) setget set_lower_color
+export var end_color: Color = Color(1, 1, 1) setget set_end_color
+
+export var upper_mesh_path: NodePath
+export var lower_mesh_path: NodePath
+export var end_mesh_path: NodePath
 
 var joint_length: float
+
+func set_upper_color(new_color: Color) -> void:
+	upper_color = new_color
+	var upper_mesh = get_node(upper_mesh_path)
+	if upper_mesh:
+		upper_mesh.get_active_material(0).albedo_color = new_color
+
+func set_lower_color(new_color: Color) -> void:
+	lower_color = new_color
+	var lower_mesh = get_node(lower_mesh_path)
+	if lower_mesh:
+		lower_mesh.get_active_material(0).albedo_color = new_color
+
+func set_end_color(new_color: Color) -> void:
+	end_color = new_color
+	var end_mesh = get_node(end_mesh_path)
+	if end_mesh:
+		end_mesh.get_active_material(0).albedo_color = new_color
 
 func _ready() -> void:
 	var child = get_child(0)
 	joint_length = child.get_node(child.child).translation.length()
 
 func _physics_process(_delta: float) -> void:
-	update_ik()
+	if not Engine.editor_hint or not get_tree().get_edited_scene_root() == self:
+		update_ik()
 
 func update_ik() -> void:
 	var offset = get_node(target).global_transform.origin - global_transform.origin
