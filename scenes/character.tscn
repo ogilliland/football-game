@@ -112,6 +112,18 @@ tracks/5/keys = {
 "update": 0,
 "values": [ Vector3( 0, -180, -10 ) ]
 }
+tracks/6/type = "value"
+tracks/6/path = NodePath("BallTarget:translation")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( 0, 0, 0.25 ) ]
+}
 
 [sub_resource type="AnimationNodeBlend2" id=23]
 
@@ -165,6 +177,9 @@ script = ExtResource( 8 )
 [node name="CollisionShape" type="CollisionShape" parent="."]
 transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0.625, 0 )
 shape = SubResource( 32 )
+
+[node name="BallTarget" type="Position3D" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.25 )
 
 [node name="Body" type="Spatial" parent="."]
 

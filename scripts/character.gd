@@ -5,6 +5,7 @@ const ACCEL: float = 60.0
 const FRICTION: float = 8.0
 
 onready var animation_tree = $AnimationTree
+onready var ball_target = $BallTarget
 
 var velocity: Vector3
 
