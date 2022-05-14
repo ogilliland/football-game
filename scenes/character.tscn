@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=2]
 
-[ext_resource path="res://scenes/leg_ik.tscn" type="PackedScene" id=1]
+[ext_resource path="res://scenes/limb_ik.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scenes/ik_target.tscn" type="PackedScene" id=2]
 
 [sub_resource type="CubeMesh" id=3]
