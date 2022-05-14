@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=2]
+[gd_scene load_steps=29 format=2]
 
 [ext_resource path="res://scenes/limb_ik.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scenes/ik_target.tscn" type="PackedScene" id=2]
@@ -7,6 +7,12 @@
 [ext_resource path="res://animations/raise_arms.tres" type="Animation" id=5]
 [ext_resource path="res://animations/run.tres" type="Animation" id=6]
 [ext_resource path="res://animations/walk.tres" type="Animation" id=7]
+[ext_resource path="res://scripts/character.gd" type="Script" id=8]
+[ext_resource path="res://scripts/character_animation.gd" type="Script" id=9]
+
+[sub_resource type="CapsuleShape" id=32]
+radius = 0.25
+height = 0.75
 
 [sub_resource type="CapsuleMesh" id=5]
 radius = 0.125
@@ -137,7 +143,7 @@ animation = "raise_arms"
 [sub_resource type="AnimationNodeTimeScale" id=22]
 
 [sub_resource type="AnimationNodeBlendTree" id=14]
-graph_offset = Vector2( -368.943, 50.8877 )
+graph_offset = Vector2( -261.815, 138.038 )
 nodes/blend_arms/node = SubResource( 23 )
 nodes/blend_arms/position = Vector2( 90, 530 )
 nodes/blend_move/node = SubResource( 31 )
@@ -153,7 +159,12 @@ nodes/time_scale/node = SubResource( 22 )
 nodes/time_scale/position = Vector2( 90, 300 )
 node_connections = [ "time_scale", 0, "blend_move", "output", 0, "combine", "combine", 0, "time_scale", "combine", 1, "blend_arms", "blend_arms", 0, "lower_arms", "blend_arms", 1, "raise_arms" ]
 
-[node name="Character" type="Spatial"]
+[node name="Character" type="KinematicBody"]
+script = ExtResource( 8 )
+
+[node name="CollisionShape" type="CollisionShape" parent="."]
+transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0.625, 0 )
+shape = SubResource( 32 )
 
 [node name="Body" type="Spatial" parent="."]
 
@@ -229,7 +240,8 @@ anims/walk = ExtResource( 7 )
 tree_root = SubResource( 14 )
 anim_player = NodePath("../AnimationPlayer")
 active = true
-parameters/blend_arms/blend_amount = 1.0
-parameters/blend_move/blend_position = 1.0
+parameters/blend_arms/blend_amount = 0.0
+parameters/blend_move/blend_position = -1.0
 parameters/combine/add_amount = 1.0
-parameters/time_scale/scale = 4.0
+parameters/time_scale/scale = 1.0
+script = ExtResource( 9 )
