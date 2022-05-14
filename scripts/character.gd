@@ -16,6 +16,10 @@ func _physics_process(delta: float) -> void:
 	Input.get_action_strength("move_down") - Input.get_action_strength("move_up")
 	)
 	
+	# TO DO - fix bug where diagonals are slower with controller
+	var direction_abs = clamp(direction.length(), 0.0, 1.0)
+	direction = direction.normalized() * direction_abs
+	
 	velocity += direction * ACCEL * delta
 	velocity -= velocity * FRICTION * delta
 	
