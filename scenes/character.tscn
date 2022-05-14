@@ -228,6 +228,7 @@ anims/walk = ExtResource( 7 )
 [node name="AnimationTree" type="AnimationTree" parent="."]
 tree_root = SubResource( 14 )
 anim_player = NodePath("../AnimationPlayer")
+active = true
 parameters/blend_arms/blend_amount = 1.0
 parameters/blend_move/blend_position = 1.0
 parameters/combine/add_amount = 1.0
