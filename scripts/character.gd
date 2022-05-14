@@ -20,7 +20,14 @@ func _physics_process(delta: float) -> void:
 	velocity -= velocity * FRICTION * delta
 	
 	velocity = move_and_slide(velocity, Vector3.UP)
-	animation_tree.update(velocity.length() / 6.5)
+	
+	var velocity_percent = clamp(velocity.length() / 6.5, 0.0, 1.0)
+	
+	# Update ball position if player has control
+	ball_target.translation.z = 0.25 + 0.75 * velocity_percent
+	
+	# Update dynamic animations
+	animation_tree.update(velocity_percent)
 	
 	# Rotate character to face velocity direction
 	if velocity.length() > 0.1:
